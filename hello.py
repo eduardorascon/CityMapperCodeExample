@@ -16,4 +16,5 @@ class HelloPage(webapp2.RequestHandler):
         """)
 
     def post(self):
-        self.response.write('You wrote: ' + self.request.get('content'))
+        comment = cgi.escape(self.request.get('content'))
+        self.response.write('You wrote: ' + comment)
