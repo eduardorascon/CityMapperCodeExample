@@ -1,19 +1,17 @@
 import cgi
+import os
 from google.appengine.api import users
+from google.appengine.ext import template
 import webapp2
 
 class HelloPage(webapp2.RequestHandler):
     def get(self):
-        self.response.write("""
-        <html>
-        <body>
-        <form action="/hello" method="POST">
-            <textarea name="content" rows="3" cols="60"></textarea>
-            <input type="submit" value="Sign Guestbook" />
-        </form>
-        </body>
-        </html>
-        """)
+        template_values = {
+            'greeting': 'HOLAHOLA'
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'hello.html')
+        self.response.write(template.render(path, template_values))
 
     def post(self):
         comment = cgi.escape(self.request.get('content'))
