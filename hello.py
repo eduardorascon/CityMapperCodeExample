@@ -1,7 +1,7 @@
 import cgi
 import os
 from google.appengine.api import users
-from google.appengine.ext import template
+from google.appengine.ext.webapp import template
 import webapp2
 
 class HelloPage(webapp2.RequestHandler):
