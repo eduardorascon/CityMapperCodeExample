@@ -1,5 +1,6 @@
 from google.appengine.api import users
 import webapp2
+from hello import *
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -11,5 +12,6 @@ class MainPage(webapp2.RequestHandler):
             self.redirect(users.create_login_url(self.request.uri))
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage)
+    ('/', MainPage),
+    ('/hello', HelloPage)
 ], debug=True)
