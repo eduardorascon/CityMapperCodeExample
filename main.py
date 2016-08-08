@@ -13,5 +13,6 @@ class MainPage(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/hello', HelloPage)
+    ('/hello', HelloPage),
+    ('/ecobici', EcobiciPage)
 ], debug=True)
