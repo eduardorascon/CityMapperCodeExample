@@ -1,6 +1,7 @@
 from google.appengine.api import users
 import webapp2
 from hello import *
+from ecobici import *
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
