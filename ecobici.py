@@ -23,10 +23,15 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
 
     def post(self):
         entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
-        credentials = EcobiciCredentials(parent = entity_key)
+        credentials = entity_key.get()
+
+        if credentials == None:
+            credentials = EcobiciCredentials(key = entity_key)
+
         credentials.api_key = self.request.get("api_key")
         credentials.api_secret = self.request.get("api_secret")
         credentials.put()
+
         self.redirect('/ecobici')
 
 
