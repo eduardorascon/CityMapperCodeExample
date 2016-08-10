@@ -10,8 +10,8 @@ class EcobiciPage(webapp2.RequestHandler):
         access_token = get_access_token()
         response = urllib.urlopen(url % access_token)
         obj = json.load(response)
-        for ecobici_station in obj:
-            self.response.write(ecobici_station + "<br />")
+        for ecobici_station in obj["stations"]:
+            self.response.write(ecobici_station["name"] + "<br />")
 
 def get_access_token():
     entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
