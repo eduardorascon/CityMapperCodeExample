@@ -6,11 +6,24 @@ from google.appengine.ext.webapp import template
 
 class EcobiciPage(webapp2.RequestHandler):
     def get(self):
-        url = 'http://api.labcd.mx/v1/movilidad/estaciones-ecobici'
-        response = urllib.urlopen(url)
+        url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
+        access_token = get_access_token()
+        response = urllib.urlopen(url % access_token)
         obj = json.load(response)
         for ecobici_station in obj:
-            self.response.write(ecobici_station["location"] + "<br />")
+            self.response.write(ecobici_station + "<br />")
+
+def get_access_token():
+    entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
+    credentials = entity_key.get()
+    url = 'https://pubsbapi.smartbike.com/oauth/v2/token?client_id=%s&client_secret=%s&grant_type=client_credentials'
+    response = urllib.urlopen(url % (credentials.id, credentials.secret))
+    obj = json.load(response)
+    credentials.access_token = obj["access_token"]
+    credentials.refresh_token = obj["refresh_token"]
+    credentials.put()
+
+    return obj["access_token"]
 
 class EcobiciCredentialsPage(webapp2.RequestHandler):
     def get(self):
