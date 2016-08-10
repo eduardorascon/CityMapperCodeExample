@@ -28,13 +28,15 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
         if credentials == None:
             credentials = EcobiciCredentials(key = entity_key)
 
-        credentials.api_key = self.request.get("api_key")
-        credentials.api_secret = self.request.get("api_secret")
+        credentials.id = self.request.get("api_id")
+        credentials.secret = self.request.get("api_secret")
         credentials.put()
 
         self.redirect('/ecobici')
 
 
 class EcobiciCredentials(ndb.Model):
-    api_key = ndb.StringProperty()
-    api_secret = ndb.StringProperty()
+    id = ndb.StringProperty()
+    secret = ndb.StringProperty()
+    access_token = ndb.StringProperty()
+    refresh_token = ndb.StringProperty()
