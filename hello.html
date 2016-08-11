@@ -25,11 +25,26 @@
                 });
             }
 
+            function calculateDistance() {
+                if(start_marker ==  null || end_marker == null)
+                    return;
+
+                console.log(start_marker.getPosition());
+                console.log(end_marker.getPosition());
+                var distance = google.maps.geometry.spherical.computeDistanceBetween(start_marker.getPosition(), end_marker.getPosition()) / 1000;
+                console.log(distance);
+            };
+
             var start_marker, end_marker;
             function placeMarker(location) {
                 var marker = new google.maps.Marker({
                     position: location,
+                    draggable: true,
                     map: map
+                });
+
+                google.maps.event.addListener(marker, 'dragend', function(event){
+                    calculateDistance();
                 });
 
                 if(start_marker == null){
@@ -76,7 +91,6 @@
     </head>
 <body>
     <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI" async defer></script>
-    <!--<script src="http://maps.google.com/maps/api/js?libraries=geometry&key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI"></script>-->
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI" async defer></script>
 </body>
 </html>
