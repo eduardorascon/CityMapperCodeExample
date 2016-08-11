@@ -6,6 +6,11 @@
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                initMap();
+            });
+        </script>
     </head>
 <body>
     <p>{{ greeting }}</p>
@@ -22,9 +27,19 @@
                 center: { lat:19.4057, lng:-99.1488 },
                 zoom: 13
             });
+
+            var latlng = new google.maps.LatLng(19.40, -99.14);
+            var marker = new google.maps.Marker({
+                position: latlng,
+                animation: google.maps.Animation.DROP,
+                title: "Hola"
+            });
+
+            marker.setMap(map);
         }
+
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI&callback=initMap" async defer>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI" async defer>
     </script>
 </body>
 </html>
