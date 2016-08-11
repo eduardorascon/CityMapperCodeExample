@@ -34,6 +34,8 @@
 
                 if(start_marker == null){
                     start_marker = marker;
+                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    return;
                 }
                 else{
                     if(end_marker == null){
@@ -44,6 +46,8 @@
                         start_marker = end_marker;
                         end_marker = marker;
                     }
+                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    end_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
             }
 
