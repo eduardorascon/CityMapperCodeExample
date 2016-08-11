@@ -29,7 +29,7 @@
                 marker.setMap(map);
             }
 
-            var station_markers;
+            var station_markers = [];
             function initMarkers () {
                 $.ajax({
                     type:"POST",
@@ -37,8 +37,18 @@
                     dataType: "json"
                 })
                 .done(function(data) {
-                    alert(data["stations"]);
-                })
+                    var lat, lon;
+                    $.each(data["stations"], function(key, data) {
+                        lat = (data["location"])["lat"];
+                        lon = (data["location"])["lon"];
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(lat, lon),
+                            animation: google.maps.Animation.DROP,
+                            map: map
+                        });
+                        station_markers.push(marker);
+                    });
+                });
             }
         </script>
     </head>
