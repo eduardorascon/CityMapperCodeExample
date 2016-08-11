@@ -6,12 +6,22 @@ from google.appengine.ext.webapp import template
 
 class EcobiciPage(webapp2.RequestHandler):
     def get(self):
-        url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
-        access_token = get_access_token()
-        response = urllib.urlopen(url % access_token)
-        obj = json.load(response)
+        obj = get_ecobici_stations()
         for ecobici_station in obj["stations"]:
-            self.response.write(ecobici_station["name"] + "<br />")
+            name = ecobici_station["name"]
+            lat = str(ecobici_station["location"]["lat"])
+            lon =str(ecobici_station["location"]["lon"])
+            self.response.write("%s<br />lat:%s,lon:%s<br />" % (name, lat, lon))
+
+    def post(self):
+        obj = get_ecobici_stations()
+        self.response.write(json.dumps(obj))
+
+def get_ecobici_stations():
+    url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
+    access_token = get_access_token()
+    response = urllib.urlopen(url % access_token)
+    return json.load(response)
 
 def get_access_token():
     entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
