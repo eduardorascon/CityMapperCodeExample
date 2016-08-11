@@ -25,26 +25,38 @@
                 });
             }
 
-            function calculateDistance() {
-                if(start_marker ==  null || end_marker == null)
+            function calculateDistance(fromMarker, toMarker) {
+                if(fromMarker ==  null || toMarker == null)
                     return;
 
-                console.log(start_marker.getPosition());
-                console.log(end_marker.getPosition());
-                var distance = google.maps.geometry.spherical.computeDistanceBetween(start_marker.getPosition(), end_marker.getPosition()) / 1000;
-                console.log(distance);
+                var distance = google.maps.geometry.spherical.computeDistanceBetween(fromMarker.getPosition(), toMarker.getPosition());
+                return distance;
             };
+
+            function displayNearbyMarkers(marker){
+                $.each(station_markers, function(index, data){
+                    var distance = calculateDistance(marker, station_markers[index]);
+                    if(distance <= 160){
+                        station_markers[index].setMap(map);
+                    }
+                });
+            }
 
             var start_marker, end_marker;
             function placeMarker(location) {
+                if(start_marker != null && end_marker != null)
+                    return;
+
                 var marker = new google.maps.Marker({
                     position: location,
                     draggable: true,
                     map: map
                 });
 
+                displayNearbyMarkers(marker);
+
                 google.maps.event.addListener(marker, 'dragend', function(event){
-                    calculateDistance();
+                    displayNearbyMarkers(marker);
                 });
 
                 if(start_marker == null){
@@ -75,7 +87,7 @@
                 })
                 .done(function(data) {
                     var lat, lon;
-                    $.each(data["stations"], function(key, data) {
+                    $.each(data["stations"], function(index, data) {
                         lat = (data["location"])["lat"];
                         lon = (data["location"])["lon"];
                         var marker = new google.maps.Marker({
