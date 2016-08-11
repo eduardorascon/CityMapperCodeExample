@@ -61,7 +61,7 @@
 
                 if(start_marker == null){
                     start_marker = marker;
-                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
                     return;
                 }
                 else{
@@ -73,7 +73,7 @@
                         start_marker = end_marker;
                         end_marker = marker;
                     }
-                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
                     end_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
                 }
             }
@@ -92,6 +92,7 @@
                         lon = (data["location"])["lon"];
                         var marker = new google.maps.Marker({
                             position: new google.maps.LatLng(lat, lon),
+                            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
                             //animation: google.maps.Animation.DROP,
                             //map: map
                         });
