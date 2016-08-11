@@ -7,7 +7,7 @@ import webapp2
 class HelloPage(webapp2.RequestHandler):
     def get(self):
         template_values = {
-            'greeting': 'HOLAHOLA'
+            'title': 'City Mapper '
         }
 
         path = os.path.join(os.path.dirname(__file__), 'hello.html')
