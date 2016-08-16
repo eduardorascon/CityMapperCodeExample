@@ -52,6 +52,8 @@
                 else{
                     nearby_from_end_marker = nearby_markers;
                 }
+
+                marker.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
             }
 
             function hideLastNearbyMarkers(marker){
@@ -78,6 +80,10 @@
                     map: map
                 });
 
+                google.maps.event.addListener(marker, 'dragend', function(event){
+                    displayNearbyMarkers(marker);
+                });
+
                 if(start_marker == null) {
                     start_marker = marker;
                 }
@@ -86,10 +92,6 @@
                 }
 
                 displayNearbyMarkers(marker);
-
-                google.maps.event.addListener(marker, 'dragend', function(event){
-                    displayNearbyMarkers(marker);
-                });
             }
 
             var station_markers = [];
