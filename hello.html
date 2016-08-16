@@ -9,8 +9,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function() {
-                initMap();
                 initMarkers();
+                initMap();
             });
 
             var map;
@@ -70,8 +70,12 @@
             //Lets place a start and an end marker.
             var start_marker, end_marker;
             function placeMarker(location) {
-                if(end_marker != null)
+
+                //if start and end marker are set lets remove 'click' listener from map
+                if(end_marker != null){
+                    google.maps.event.clearListeners(map, 'click');
                     return;
+                }
 
                 var marker = new google.maps.Marker({
                     position: location,
