@@ -29,53 +29,67 @@
                 if(fromMarker ==  null || toMarker == null)
                     return;
 
-                var distance = google.maps.geometry.spherical.computeDistanceBetween(fromMarker.getPosition(), toMarker.getPosition());
-                return distance;
+                return google.maps.geometry.spherical.computeDistanceBetween(fromMarker.getPosition(), toMarker.getPosition());;
             };
 
+            var nearby_from_start_marker, nearby_from_end_marker;
             function displayNearbyMarkers(marker){
+                hideLastNearbyMarkers(marker);
+
+                var nearby_markers = []
+                var distance;
                 $.each(station_markers, function(index, data){
-                    var distance = calculateDistance(marker, station_markers[index]);
-                    if(distance <= 160){
+                    distance = calculateDistance(marker, station_markers[index]);
+                    if(distance <= 180){
                         station_markers[index].setMap(map);
+                        nearby_markers.push(station_markers[index]);
                     }
+                });
+
+                if(marker === start_marker){ 
+                    nearby_from_start_marker = nearby_markers;
+                }
+                else{
+                    nearby_from_end_marker = nearby_markers;
+                }
+            }
+
+            function hideLastNearbyMarkers(marker){
+                var markers = (marker == start_marker ? nearby_from_start_marker : nearby_from_end_marker);
+
+                if(markers == null)
+                    return;
+
+                $.each(markers, function(index, data){
+                    markers[index].setMap(null);
                 });
             }
 
+            //Lets place a start and an end marker.
             var start_marker, end_marker;
             function placeMarker(location) {
-                if(start_marker != null && end_marker != null)
+                if(end_marker != null)
                     return;
 
                 var marker = new google.maps.Marker({
                     position: location,
                     draggable: true,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/' + (start_marker == null ? 'yellow-dot.png' : 'red-dot.png'),
                     map: map
                 });
+
+                if(start_marker == null) {
+                    start_marker = marker;
+                }
+                else {
+                    end_marker = marker;
+                }
 
                 displayNearbyMarkers(marker);
 
                 google.maps.event.addListener(marker, 'dragend', function(event){
                     displayNearbyMarkers(marker);
                 });
-
-                if(start_marker == null){
-                    start_marker = marker;
-                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
-                    return;
-                }
-                else{
-                    if(end_marker == null){
-                        end_marker = marker;
-                    }
-                    else{
-                        start_marker.setMap(null);
-                        start_marker = end_marker;
-                        end_marker = marker;
-                    }
-                    start_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
-                    end_marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-                }
             }
 
             var station_markers = [];
