@@ -142,6 +142,7 @@
             }
 
             var station_markers = [];
+            var station_positions = [];
             function initMarkers () 
             {
                 $.ajax(
@@ -154,19 +155,23 @@
                 {
                     console.log(data);
                     $.each(data["stations"], function(index, data) {
+                        position = new google.maps.LatLng((data["location"])["lat"], (data["location"])["lon"]);
+                        station_positions.push(position);
                         var marker = new google.maps.Marker(
                         {
-                            position: new google.maps.LatLng((data["location"])["lat"], (data["location"])["lon"]),
+                            position: position,
                             icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
                         });
                         station_markers.push(marker);
                     });
 
-                    drawEcobiciCoveragePolygon(station_markers);
+                    //drawEcobiciCoveragePolygon();
+                    sortPoints2Polygon();
                 });
             }
 
-            function drawEcobiciCoveragePolygon(station_markers){
+            function drawEcobiciCoveragePolygon()
+            {
                 var coverage = new google.maps.Polygon(
                 {
                     //paths: station_markers,
@@ -177,6 +182,45 @@
                     fillOpacity: 0.35,
                     map: map
                 });
+            }
+
+            function getPolygonEdges()
+            {
+                var wtc = new google.maps.Marker(
+                {
+                    position: new google.maps.LatLng(19.3895452,-99.1767453)
+                });
+            }
+
+            function sortPoints2Polygon() 
+            {
+                points = [];
+                var bounds = new google.maps.LatLngBounds(); 
+                for (var i=0; i < station_positions.length; i++)
+                {
+                    points.push(station_positions[i]);
+                    console.log(station_positions[i]);
+                    bounds.extend(station_positions[i]);
+                }
+                var center = bounds.getCenter();
+                var bearing = [];
+                
+                for (var i=0; i < points.length; i++)
+                {
+                    console.log("b:" + bearing);
+                    console.log("antes:" + points[i].bearing);
+                    points[i].bearing = google.maps.geometry.spherical.computeHeading(center, points[i]);
+                    console.log("despues:" + points[i].bearing);
+                }
+                    
+
+                points.sort(bearingsort);
+                return points;
+            }
+
+            function bearingsort(a,b)
+            {
+                return (a.bearing - b.bearing);
             }
         </script>
     </head>
