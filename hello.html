@@ -140,14 +140,27 @@
                 })
                 .done(function(data) {
                     var lat, lon;
+                    var polygon_points = [];
                     $.each(data["stations"], function(index, data) {
                         lat = (data["location"])["lat"];
                         lon = (data["location"])["lon"];
+                        var position = new google.maps.LatLng(lat, lon);
+                        polygon_points.push(position);
                         var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(lat, lon),
+                            position: position,
                             icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
                         });
                         station_markers.push(marker);
+                    });
+
+                    var coverage = new google.maps.Polygon({
+                        paths: polygon_points,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 3,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+                        map: map
                     });
                 });
             }
