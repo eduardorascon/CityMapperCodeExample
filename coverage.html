@@ -37,16 +37,12 @@
                     position = new google.maps.LatLng((data["location"])["lat"], (data["location"])["lon"]);
                     station_positions.push(position);
                 });
+
+                calculateConvexHull();
             });
         }
 
-        $(document).ready(function() {
-            initMap();
-            initMarkers();
-            calculateConvexHull();
-        });
-
-        var polyline;
+        var points;
         function calculateConvexHull() {
             if (polyline)
                 polyline.setMap(null);
@@ -54,7 +50,7 @@
             points = [];
             for (var i=0; i < station_positions.length; i++)
             {
-                points.push(station_positions[i].getPosition());
+                points.push(station_positions[i]);
             }
             points.sort(sortPointY);
             points.sort(sortPointX);
@@ -71,9 +67,10 @@
             return a.lat() - b.lat();
         }
 
+        var polyline;
         function DrawHull() {
             hullPoints = [];
-            chainHull_2D( points, points.length, hullPoints );
+            chainHull_2D(points, points.length, hullPoints);
             polyline = new google.maps.Polygon(
             {
                 map: map,
@@ -85,6 +82,11 @@
                 strokeOpacity:0.5
             });
         }
+
+        $(document).ready(function() {
+            initMap();
+            initMarkers();
+        });
     </script>
 </body>
 </html>
