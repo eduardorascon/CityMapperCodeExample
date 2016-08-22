@@ -10,7 +10,7 @@ class HelloPage(webapp2.RequestHandler):
             'title': 'City Mapper '
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'hello.html')
+        path = os.path.join(os.path.dirname(__file__), 'html/hello.html')
         self.response.write(template.render(path, template_values))
 
     def post(self):

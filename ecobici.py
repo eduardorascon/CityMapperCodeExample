@@ -41,7 +41,7 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
             'greeting': 'API CREDENTIALS'
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'credentials.html')
+        path = os.path.join(os.path.dirname(__file__), 'html/credentials.html')
         self.response.write(template.render(path, template_values))
 
     def post(self):
@@ -69,5 +69,5 @@ class EcobiciCoveragePolygonPage(webapp2.RequestHandler):
             'greeting' : 'COVERAGE'
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'coverage.html')
+        path = os.path.join(os.path.dirname(__file__), 'html/coverage.html')
         self.response.write(template.render(path, template_values))
