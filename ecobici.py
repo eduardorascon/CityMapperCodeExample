@@ -41,7 +41,7 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
             'greeting': 'API CREDENTIALS'
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'credentials.html')
+        path = os.path.join(os.path.dirname(__file__), 'html/credentials.html')
         self.response.write(template.render(path, template_values))
 
     def post(self):
@@ -57,9 +57,17 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
 
         self.redirect('/ecobici')
 
-
 class EcobiciCredentials(ndb.Model):
     id = ndb.StringProperty()
     secret = ndb.StringProperty()
     access_token = ndb.StringProperty()
     refresh_token = ndb.StringProperty()
+
+class EcobiciCoveragePolygonPage(webapp2.RequestHandler):
+    def get(self):
+        template_values = {
+            'greeting' : 'COVERAGE'
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'html/coverage.html')
+        self.response.write(template.render(path, template_values))

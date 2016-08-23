@@ -16,5 +16,6 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/hello', HelloPage),
     ('/ecobici', EcobiciPage),
-    ('/ecobici/credentials', EcobiciCredentialsPage)
+    ('/ecobici/credentials', EcobiciCredentialsPage),
+    ('/ecobici/coverage', EcobiciCoveragePolygonPage)
 ], debug=True)
