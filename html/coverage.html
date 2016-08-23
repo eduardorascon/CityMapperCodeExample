@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <style>
+            #map {
+                height: 100%;
+            }
+        </style>
+        <title>{{ title }}</title>
+    </head>
+<body>
+    <div id="map"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI" async defer></script>
+    <script type="text/javascript" src="/js/convex_hull.js"></script>
+    <script type="text/javascript">
+        var map;
+        function initMap(){
+            map = new google.maps.Map(document.getElementById('map'), 
+            {
+                center: { lat:19.4057, lng:-99.1488 },
+                zoom: 13
+            });
+        }
+
+        var station_positions = [];
+        function initMarkers () 
+        {
+            $.ajax(
+            {
+                type:"POST",
+                url:"/ecobici",
+                dataType: "json"
+            })
+            .done(function(data) 
+            {
+                $.each(data["stations"], function(index, data) {
+                    position = new google.maps.LatLng((data["location"])["lat"], (data["location"])["lon"]);
+                    station_positions.push(position);
+                });
+
+                calculateConvexHull();
+            });
+        }
+
+        var points;
+        function calculateConvexHull() {
+            if (polyline)
+                polyline.setMap(null);
+            
+            points = [];
+            for (var i=0; i < station_positions.length; i++)
+            {
+                points.push(station_positions[i]);
+            }
+            points.sort(sortPointY);
+            points.sort(sortPointX);
+            DrawHull();
+        }
+
+        function sortPointX(a,b)
+        {
+            return a.lng() - b.lng();
+        }
+        
+        function sortPointY(a,b)
+        {
+            return a.lat() - b.lat();
+        }
+
+        var polyline;
+        function DrawHull() {
+            hullPoints = [];
+            chainHull_2D(points, points.length, hullPoints);
+            polyline = new google.maps.Polygon(
+            {
+                map: map,
+                paths:hullPoints, 
+                fillColor:"#FF0000",
+                strokeWidth:1, 
+                fillOpacity:0.3, 
+                strokeColor:"#FF0000",
+                strokeOpacity:0.5
+            });
+        }
+
+        $(document).ready(function() {
+            initMap();
+            initMarkers();
+        });
+    </script>
+</body>
+</html>
