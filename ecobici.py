@@ -19,8 +19,7 @@ class EcobiciPage(webapp2.RequestHandler):
 
 def get_ecobici_stations():
     url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
-    access_token = get_access_token()
-    response = urllib.urlopen(url % access_token)
+    response = urllib.urlopen(url % get_access_token())
     return json.load(response)
 
 def get_access_token():
@@ -29,11 +28,13 @@ def get_access_token():
     url = 'https://pubsbapi.smartbike.com/oauth/v2/token?client_id=%s&client_secret=%s&grant_type=client_credentials'
     response = urllib.urlopen(url % (credentials.id, credentials.secret))
     obj = json.load(response)
-    credentials.access_token = obj["access_token"]
-    credentials.refresh_token = obj["refresh_token"]
-    credentials.put()
+    
+    if obj == None:
+        credentials.access_token = obj["access_token"]
+        credentials.refresh_token = obj["refresh_token"]
+        credentials.put()
 
-    return obj["access_token"]
+    return credentials.access_token
 
 class EcobiciCredentialsPage(webapp2.RequestHandler):
     def get(self):
