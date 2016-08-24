@@ -1,17 +1,17 @@
-import webapp2
-import urllib, json
-import os
+import webapp2, json, os
+from google.appengine.api import urlfetch
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 
 class EcobiciPage(webapp2.RequestHandler):
     def get(self):
         obj = get_ecobici_stations()
-        for ecobici_station in obj["stations"]:
-            name = ecobici_station["name"]
-            lat = str(ecobici_station["location"]["lat"])
-            lon =str(ecobici_station["location"]["lon"])
-            self.response.write("%s<br />lat:%s,lon:%s<br />" % (name, lat, lon))
+        self.response.write(obj)
+#        for ecobici_station in obj["stations"]:
+#            name = ecobici_station["name"]
+#            lat = str(ecobici_station["location"]["lat"])
+#            lon =str(ecobici_station["location"]["lon"])
+#            self.response.write("%s<br />lat:%s,lon:%s<br />" % (name, lat, lon))
 
     def post(self):
         obj = get_ecobici_stations()
@@ -19,15 +19,15 @@ class EcobiciPage(webapp2.RequestHandler):
 
 def get_ecobici_stations():
     url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
-    response = urllib.urlopen(url % get_access_token())
-    return json.load(response)
+    response = urlfetch.fetch(url % get_access_token())
+    return json.loads(response.content)
 
 def get_access_token():
     entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
     credentials = entity_key.get()
     url = 'https://pubsbapi.smartbike.com/oauth/v2/token?client_id=%s&client_secret=%s&grant_type=client_credentials'
-    response = urllib.urlopen(url % (credentials.id, credentials.secret))
-    obj = json.load(response)
+    response = urlfetch.fetch(url % (credentials.id, credentials.secret))    
+    obj = json.loads(response.content)
     
     if obj == None:
         credentials.access_token = obj["access_token"]
