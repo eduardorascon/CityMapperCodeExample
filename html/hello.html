@@ -10,7 +10,33 @@
         <title>{{ title }}</title>
     </head>
 <body>
-    <div id="map"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-9">
+                <div id="map"></div>
+            </div>
+            <div class="col-xs-3">
+                <form class="form-horizontal">
+                    <div class="form-group form-group-lg">
+                        <label>START</label>
+                        <div class="row">
+                            <div class="col-xs-11">
+                                <input type="input" class="form-control" id="startInput" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-lg">
+                        <label>END</label>
+                        <div class="row">
+                            <div class="col-xs-11">
+                                <input type="input" class="form-control" id="endInput" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyDO-JpX5xstJy9SzL630GoK3HLUUudYtNI" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
