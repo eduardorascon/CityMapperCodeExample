@@ -149,7 +149,6 @@ function initMarkers ()
     })
     .done(function(data) 
     {
-        console.log(data);
         $.each(data["stations"], function(index, data) {
             position = new google.maps.LatLng((data["location"])["lat"], (data["location"])["lon"]);
             station_positions.push(position);
@@ -195,21 +194,14 @@ function sortPoints2Polygon()
     for (var i=0; i < station_positions.length; i++)
     {
         points.push(station_positions[i]);
-        console.log(station_positions[i]);
         bounds.extend(station_positions[i]);
     }
     var center = bounds.getCenter();
     var bearing = [];
     
     for (var i=0; i < points.length; i++)
-    {
-        console.log("b:" + bearing);
-        console.log("antes:" + points[i].bearing);
         points[i].bearing = google.maps.geometry.spherical.computeHeading(center, points[i]);
-        console.log("despues:" + points[i].bearing);
-    }
         
-
     points.sort(bearingsort);
     return points;
 }
