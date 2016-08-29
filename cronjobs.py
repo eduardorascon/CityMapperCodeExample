@@ -6,6 +6,14 @@ class CronJobsPage(webapp2.RequestHandler):
 
 		#Save data to DataStore
 
+def get_ecobici_status():
+    url = 'https://pubsbapi.smartbike.com/api/v1/status.json?access_token=%s'
+    response = urlfetch.fetch(url % get_access_token())
+    if response.status_code == 401:
+        response = urlfetch.fetch(url % update_access_token())
+
+    return json.loads(response.content)
+
 def get_access_token():
     entity_key = ndb.Key("EcobiciCredentials", "default_credentials")
     credentials = entity_key.get()
