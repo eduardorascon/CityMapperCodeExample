@@ -1,7 +1,7 @@
 import json
 from google.appengine.api import urlfetch
 
-class Ecobici:
+class ecobici:
     def get_ecobici_stations():
         url = 'https://pubsbapi.smartbike.com/api/v1/stations.json?access_token=%s'
         response = urlfetch.fetch(url % get_access_token())
