@@ -2,6 +2,7 @@ import webapp2, json, os
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 import apicalls
+import models
 
 class EcobiciPage(webapp2.RequestHandler):
     def get(self):
@@ -37,12 +38,6 @@ class EcobiciCredentialsPage(webapp2.RequestHandler):
         credentials.put()
 
         self.redirect('/ecobici')
-
-class EcobiciCredentials(ndb.Model):
-    id = ndb.StringProperty()
-    secret = ndb.StringProperty()
-    access_token = ndb.StringProperty()
-    refresh_token = ndb.StringProperty()
 
 class EcobiciCoveragePolygonPage(webapp2.RequestHandler):
     def get(self):

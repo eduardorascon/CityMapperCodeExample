@@ -1,4 +1,6 @@
 import json
+from models import EcobiciCredentials
+from google.appengine.ext import ndb
 from google.appengine.api import urlfetch
 
 def get_ecobici_stations():
