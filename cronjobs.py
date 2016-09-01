@@ -1,5 +1,5 @@
 import webapp2
-from apicalls import ecobici
+import apicalls
 
 class CronJobsPage(webapp2.RequestHandler):
 	def post(self):

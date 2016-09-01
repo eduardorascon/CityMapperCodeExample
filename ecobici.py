@@ -1,11 +1,11 @@
 import webapp2, json, os
-from google.appengine.api import urlfetch
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
+import apicalls
 
 class EcobiciPage(webapp2.RequestHandler):
     def get(self):
-        obj = get_ecobici_stations()
+        obj = apicalls.get_ecobici_stations()
         for ecobici_station in obj["stations"]:
             name = ecobici_station["name"]
             lat = str(ecobici_station["location"]["lat"])
@@ -13,7 +13,7 @@ class EcobiciPage(webapp2.RequestHandler):
             self.response.write("%s<br />lat:%s,lon:%s<br />" % (name, lat, lon))
 
     def post(self):
-        obj = get_ecobici_stations()
+        obj = apicalls.get_ecobici_stations()
         self.response.write(json.dumps(obj))
 
 class EcobiciCredentialsPage(webapp2.RequestHandler):
