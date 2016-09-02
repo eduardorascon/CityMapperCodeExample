@@ -1,11 +1,12 @@
+from google.appengine.ext import ndb
 import webapp2, json
 import apicalls
 
 class CronJobsPage(webapp2.RequestHandler):
-	def post(self):
-		#Request data from Ecobici API every 30 seconds.
+    def post(self):
+        #Request data from Ecobici API every 30 seconds.
         obj = apicalls.get_ecobici_stations()
-		#Save data to DataStore
+        #Save data to DataStore
         status_list = []
         for station_status in obj["stationsStatus"]:
             status = __CreateStatusEntity(station_status)

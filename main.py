@@ -2,6 +2,7 @@ from google.appengine.api import users
 import webapp2
 from hello import *
 from ecobici import *
+from cronjobs import *
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -17,5 +18,6 @@ app = webapp2.WSGIApplication([
     ('/hello', HelloPage),
     ('/ecobici', EcobiciPage),
     ('/ecobici/credentials', EcobiciCredentialsPage),
-    ('/ecobici/coverage', EcobiciCoveragePolygonPage)
+    ('/ecobici/coverage', EcobiciCoveragePolygonPage),
+    ('/cronjobs', CronJobsPage)
 ], debug=True)
