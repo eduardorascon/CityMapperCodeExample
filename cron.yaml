@@ -1,0 +1,4 @@
+cron:
+- description: store ecobici status once every minute
+  url: /cronjobs
+  schedule: every 1 minutes
