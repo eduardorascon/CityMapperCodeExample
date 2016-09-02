@@ -8,19 +8,24 @@ class CronJobsPage(webapp2.RequestHandler):
 		#Save data to DataStore
         status_list = []
         for station_status in obj["stationsStatus"]:
-            status = EcobiciStationStatus()
-            status.timestamp = "20160901130000"
-            station.id = station_status["id"]
-            station.status =  station_status["status"]
-            station.slots_occupied = station_status["availability"]["bikes"]
-            station.slots_available = station_status["availability"]["slots"]
+            status = __CreateStatusEntity(station_status)
             status_list.append(status)
 
         ndb.put_multi(status_list)
 
+    def __CreateStatusEntity(stationStatus):
+        s = EcobiciStationStatus()
+        s.timestamp = "20160901130000"
+        s.id = station_status["id"]
+        s.status =  station_status["status"]
+        s.slots_occupied = station_status["availability"]["bikes"]
+        s.slots_available = station_status["availability"]["slots"]
+
+        return s
+
 class EcobiciStationStatus(ndb.Model):
     timestamp = ndb.StringProperty()
-    station_id = ndb.IntegerProperty()
-    station_status = ndb.StringProperty()
+    id = ndb.IntegerProperty()
+    status = ndb.StringProperty()
     slots_occupied = ndb.IntegerProperty()
     slots_available = ndb.IntegerProperty()
